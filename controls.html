@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<body>
+<script>
+
+var peer = new Peer({key: '7nxxqfxzhestt9'});
+var conn = peer.connect(window.prompt('Peer ID')), connection = null;
+conn.on('open', function() {
+  console.log("CONNECTED");
+  connection = conn;
+});
+
+var baseGamma = undefined;
+window.addEventListener("deviceorientation", function(e) {
+  if(baseGamma === undefined) baseGamma = e.gamma;
+
+  var dz = (e.gamma - baseGamma) / 90,
+      ry = e.beta / 180;
+  if(connection)
+    connection.send(JSON.stringify({dz: dz, ry: ry}));
+});
+</script>
+</body>
+</html
